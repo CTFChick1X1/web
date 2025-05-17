@@ -1,0 +1,63 @@
+<!-- templates/base.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}My Portfolio{% endblock %}</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- RippleUI Theme Config (optional) -->
+  <script>
+    tailwind.config = {
+      plugins: [window.rippleui],
+    }
+  </script>
+
+  <!-- RippleUI CDN -->
+  <script src="https://unpkg.com/rippleui/dist/js/rippleui.min.js"></script>
+  <link href="https://unpkg.com/rippleui/dist/css/rippleui.min.css" rel="stylesheet" />
+</head>
+<body class="min-h-screen flex flex-col bg-base-100 text-base-content">
+
+  <!-- Navbar -->
+  <header class="navbar bg-base-200 shadow-md px-4 md:px-8">
+    <div class="flex-1">
+      <a href="{% url 'home' %}" class="text-xl font-bold">MySite</a>
+    </div>
+    <nav class="flex gap-4">
+      <a href="{% url 'portfolio' %}" class="btn btn-ghost btn-sm">Portfolio</a>
+      <a href="{% url 'blogpost' %}" class="btn btn-ghost btn-sm">Blog</a>
+      <a href="{% url 'about' %}" class="btn btn-ghost btn-sm">About</a>
+      <a href="{% url 'contact' %}" class="btn btn-ghost btn-sm">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Flash Messages -->
+  <div class="container mx-auto mt-4">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <!-- Page Content -->
+  <main class="flex-grow">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-base-200 text-center text-sm py-6 mt-12">
+    <p>&copy; {{ now.year }} Your Name. Built with Django & RippleUI.</p>
+  </footer>
+
+</body>
+</html>

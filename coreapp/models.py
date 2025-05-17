@@ -47,7 +47,7 @@ class Project(models.Model):
         if not self.slug:
             self.slug = self.title.replace(' ', '-').lower()
         super().save(*args, **kwargs)
-        
+
 
     def __str__(self):
         return self.title
@@ -63,3 +63,17 @@ class Comment(models.Model):
     def __str__(self):
         return f"Comment by {self.name}"
 
+
+class Testimonial(models.Model):
+    name = models.CharField(max_length=100)
+    company = models.CharField(max_length=100, blank=True, null=True)
+    feedback = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Testimonial"
+        verbose_name_plural = "Testimonials"
+
+    def __str__(self):
+        return f"{self.name} - {self.company or 'No Company'}"

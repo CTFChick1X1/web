@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - My Portfolio{% endblock %}
+
+{% block content %}
+<!-- Dark Mode Toggle (top-right corner) -->
+<div class="flex justify-end px-4 pt-4">
+  <label class="flex items-center cursor-pointer gap-2">
+    <span class="text-sm">Dark Mode</span>
+    <input type="checkbox" class="toggle theme-controller" value="dark" />
+  </label>
+</div>
+
+<!-- Hero Section -->
+<section class="container mx-auto px-4 py-16 text-center transition-all duration-500">
+  <h1 class="text-4xl md:text-5xl font-bold mb-4">Welcome to My Portfolio</h1>
+  <p class="text-lg text-gray-600 dark:text-gray-300 mb-6 max-w-2xl mx-auto">
+    I'm a passionate developer focused on building clean, modern, and secure web applications. Explore my projects and thoughts below.
+  </p>
+  <a href="{% url 'contact' %}" class="btn btn-primary transition hover:scale-105">Hire Me</a>
+</section>
+
+<hr class="my-12 border-base-300" />
+
+<!-- Skills Section -->
+<section class="container mx-auto px-4 py-12 transition-all duration-500">
+  <h2 class="text-2xl font-bold mb-6 text-center">Skills & Technologies</h2>
+  <div class="flex flex-wrap justify-center gap-3">
+    {% for skill in skills %}
+      <div class="badge badge-outline badge-accent">{{ skill }}</div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Blog Posts -->
+<section class="container mx-auto px-4 py-12 transition-all duration-500">
+  <h2 class="text-2xl font-bold mb-6">Recent Blog Posts</h2>
+  <div class="grid md:grid-cols-3 gap-6">
+    {% for post in recent_posts %}
+    <div class="card bg-base-100 shadow-lg transition hover:scale-[1.02]">
+      <div class="card-body">
+        <h3 class="card-title">{{ post.title }}</h3>
+        <p class="text-sm text-gray-500 line-clamp-3">{{ post.content|truncatewords:25 }}</p>
+        <div class="card-actions justify-end">
+          <a href="{% url 'blogpost_detail' post.slug %}" class="btn btn-sm btn-outline">Read More</a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p>No blog posts available yet.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Featured Projects -->
+<section class="container mx-auto px-4 py-12 transition-all duration-500">
+  <h2 class="text-2xl font-bold mb-6">Featured Projects</h2>
+  <div class="grid md:grid-cols-3 gap-6">
+    {% for project in featured_projects %}
+    <div class="card bg-base-100 shadow-md transition hover:scale-[1.02]">
+      <figure>
+        <img src="{{ project.image.url }}" alt="{{ project.title }}" class="h-48 w-full object-cover rounded-t" />
+      </figure>
+      <div class="card-body">
+        <h3 class="card-title">{{ project.title }}</h3>
+        <p class="text-sm text-gray-500 line-clamp-3">{{ project.description|truncatewords:25 }}</p>
+        <div class="card-actions justify-end">
+          <a href="{% url 'portfolio_detail' project.slug %}" class="btn btn-sm btn-outline">View Project</a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p>No projects yet.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="container mx-auto px-4 py-12 transition-all duration-500">
+  <h2 class="text-2xl font-bold mb-6 text-center">Testimonials</h2>
+  <div class="grid md:grid-cols-2 gap-6">
+    {% for testimonial in testimonials %}
+    <div class="card bg-base-100 shadow p-6">
+      <p class="italic text-gray-600 dark:text-gray-300">"{{ testimonial.feedback }}"</p>
+      <div class="mt-4 text-right font-semibold">
+        — {{ testimonial.name }}, {{ testimonial.company }}
+      </div>
+    </div>
+    {% empty %}
+    <p class="text-center text-gray-500">No testimonials yet.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Final CTA -->
+<section class="container mx-auto px-4 py-16 text-center transition-all duration-500">
+  <h2 class="text-3xl font-bold mb-4">Let’s Work Together</h2>
+  <p class="text-gray-600 dark:text-gray-300 mb-6">I’m open to freelance projects, full-time roles, and collaborations.</p>
+  <a href="{% url 'contact' %}" class="btn btn-primary btn-lg hover:scale-105 transition">Get in Touch</a>
+</section>
+{% endblock %}
