@@ -18,9 +18,40 @@ class BlogPost(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     published = models.BooleanField(default=True)
+    slug = models.SlugField(unique=True, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self.title.replace(' ', '-').lower()
+        super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ['-created_at']
+
 
     def __str__(self):
         return self.title
+
+# Portfolio Models
+class Project(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    technologies = models.CharField(max_length=255)
+    github_link = models.URLField(blank=True)
+    live_demo_link = models.URLField(blank=True)
+    project_image = models.ImageField(upload_to='project_images/', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    slug = models.SlugField(unique=True, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self.title.replace(' ', '-').lower()
+        super().save(*args, **kwargs)
+        
+
+    def __str__(self):
+        return self.title
+    
 
 class Comment(models.Model):
     post = models.ForeignKey(BlogPost, related_name="comments", on_delete=models.CASCADE)
@@ -31,3 +62,4 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Comment by {self.name}"
+
