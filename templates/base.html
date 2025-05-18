@@ -1,62 +1,72 @@
-<!-- templates/base.html -->
 {% load static %}
 
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{% block title %}My Portfolio{% endblock %}</title>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- RippleUI Theme Config (optional) -->
+  <!-- RippleUI CDN & config -->
+  <script src="https://unpkg.com/rippleui/dist/js/rippleui.min.js"></script>
+  <link href="https://unpkg.com/rippleui/dist/css/rippleui.min.css" rel="stylesheet" />
   <script>
     tailwind.config = {
       plugins: [window.rippleui],
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3b82f6',   /* Tailwind blue-500 */
+            secondary: '#6366f1', /* Tailwind indigo-500 */
+          }
+        }
+      }
     }
   </script>
-
-  <!-- RippleUI CDN -->
-  <script src="https://unpkg.com/rippleui/dist/js/rippleui.min.js"></script>
-  <link href="https://unpkg.com/rippleui/dist/css/rippleui.min.css" rel="stylesheet" />
 </head>
-<body class="min-h-screen flex flex-col bg-base-100 text-base-content">
+<body class="min-h-screen flex flex-col bg-base-100 text-base-content font-sans">
 
   <!-- Navbar -->
-  <header class="navbar bg-base-200 shadow-md px-4 md:px-8">
+  <header class="navbar bg-base-200 shadow-md px-6 py-4 md:px-12">
     <div class="flex-1">
-      <a href="{% url 'home' %}" class="text-xl font-bold">MySite</a>
+      <a href="{% url 'home' %}" class="text-2xl font-extrabold text-primary hover:text-secondary transition-colors">
+        MySite
+      </a>
     </div>
-    <nav class="flex gap-4">
-      <a href="{% url 'portfolio' %}" class="btn btn-ghost btn-sm">Portfolio</a>
-      <a href="{% url 'blogpost' %}" class="btn btn-ghost btn-sm">Blog</a>
-      <a href="{% url 'about' %}" class="btn btn-ghost btn-sm">About</a>
-      <a href="{% url 'contact' %}" class="btn btn-ghost btn-sm">Contact</a>
+    <nav class="flex gap-6 items-center text-base font-medium">
+      <a href="{% url 'portfolio' %}" class="btn btn-ghost btn-sm hover:bg-primary hover:text-white transition duration-300">Portfolio</a>
+      <a href="{% url 'blogpost' %}" class="btn btn-ghost btn-sm hover:bg-primary hover:text-white transition duration-300">Blog</a>
+      <a href="{% url 'about' %}" class="btn btn-ghost btn-sm hover:bg-primary hover:text-white transition duration-300">About</a>
+      <a href="{% url 'contact' %}" class="btn btn-ghost btn-sm hover:bg-primary hover:text-white transition duration-300">Contact</a>
     </nav>
   </header>
 
   <!-- Flash Messages -->
-  <div class="container mx-auto mt-4">
+  <div class="container mx-auto mt-6 px-4 md:px-0 max-w-4xl">
     {% if messages %}
       {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">
-          {{ message }}
+        <div class="alert alert-{{ message.tags }} mb-4 shadow-lg rounded-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 18v.01"></path>
+          </svg>
+          <span>{{ message }}</span>
         </div>
       {% endfor %}
     {% endif %}
   </div>
 
   <!-- Page Content -->
-  <main class="flex-grow">
+  <main class="flex-grow container mx-auto px-4 md:px-0 max-w-6xl mt-8 mb-16">
     {% block content %}
     {% endblock %}
   </main>
 
   <!-- Footer -->
-  <footer class="bg-base-200 text-center text-sm py-6 mt-12">
-    <p>&copy; {{ now.year }} Your Name. Built with Django & RippleUI.</p>
+  <footer class="bg-base-200 text-center text-sm py-6 border-t border-base-300">
+    <p class="text-gray-600">&copy; {{ now.year }} Your Name. Built with Django & RippleUI.</p>
   </footer>
 
 </body>
