@@ -16,8 +16,10 @@ def contact(request):
     return render(request, 'contact.html')
 
 def portfolio(request):
-    return render(request, 'portfolio.html')
+    projects = Project.objects.select_related('category').all()
+    return render(request, 'portfolio.html', {'projects': projects})
 
 
 def blogpost(request):
-    return render(request, 'blogpost.html')
+    blogposts = BlogPost.objects.select_related('author').all()
+    return render(request, 'blogpost.html', {'blogposts': blogposts})
