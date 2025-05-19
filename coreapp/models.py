@@ -3,12 +3,14 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+# This classifies blogs ang different categorie .i.e Tech, Security, Network, Fasion
 class Category(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
 
+# Hold data for different Blog
 class BlogPost(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
@@ -20,6 +22,7 @@ class BlogPost(models.Model):
     published = models.BooleanField(default=True)
     slug = models.SlugField(unique=True, null=True, blank=True)
 
+    #Generate link url from the models title and save to slug before saving to database
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = self.title.replace(' ', '-').lower()
@@ -32,7 +35,7 @@ class BlogPost(models.Model):
     def __str__(self):
         return self.title
 
-# Portfolio Models
+# Portfolio Models and Pojects
 class Project(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
@@ -43,6 +46,7 @@ class Project(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(unique=True, null=True, blank=True)
 
+    # Generate link url from the models title and save to slug
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = self.title.replace(' ', '-').lower()
@@ -52,7 +56,7 @@ class Project(models.Model):
     def __str__(self):
         return self.title
     
-
+# saves user comments 
 class Comment(models.Model):
     post = models.ForeignKey(BlogPost, related_name="comments", on_delete=models.CASCADE)
     name = models.CharField(max_length=80)
@@ -63,7 +67,7 @@ class Comment(models.Model):
     def __str__(self):
         return f"Comment by {self.name}"
 
-
+# what user says about us and their experience
 class Testimonial(models.Model):
     name = models.CharField(max_length=100)
     company = models.CharField(max_length=100, blank=True, null=True)
